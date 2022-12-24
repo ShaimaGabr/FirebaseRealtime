@@ -10,38 +10,42 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class ViewModelFetching @Inject constructor(
     val repository: TaskRepository
-):ViewModel() {
+) : ViewModel() {
 
 
     private val _tasks = MutableLiveData<List<EmployeeModel>>()
     val tasks: LiveData<List<EmployeeModel>> = _tasks
 
 
-     fun getTasks() {
+    fun getTasks() {
 
-         viewModelScope.launch {
+        viewModelScope.launch {
             repository.getTasks(_tasks)
 
-     }}
+        }
+    }
 
     private val _action = MutableLiveData<String>()
     val action: LiveData<String> = _action
 
-    fun insertAction(employeeModel : EmployeeModel){
+    fun insertAction(employeeModel: EmployeeModel) {
         viewModelScope.launch {
-        repository.insertTasks(employeeModel,_action)
-    }}
+            repository.insertTasks(employeeModel, _action)
+        }
+    }
+
     private val _deleted = MutableLiveData<String>()
     val deleted: LiveData<String> = _deleted
 
-fun delete(id:String){
-    viewModelScope.launch {
-        repository.deletTask(id,_deleted)
+    fun delete(id: String) {
+        viewModelScope.launch {
+            repository.deletTask(id, _deleted)
+        }
     }
-}
 }
 
 

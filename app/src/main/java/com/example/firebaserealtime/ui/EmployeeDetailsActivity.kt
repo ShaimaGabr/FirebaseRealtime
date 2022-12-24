@@ -22,20 +22,20 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EmployeeDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityEmployeeDetailsBinding
-    private val viewModelDelet:ViewModelFetching by viewModels()
+    private val viewModelDelet: ViewModelFetching by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    binding=ActivityEmployeeDetailsBinding.inflate(layoutInflater)
+        binding = ActivityEmployeeDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setValuesToViews()
-    binding.btnUpdate.setOnClickListener {
+        binding.btnUpdate.setOnClickListener {
             openUpdateDialog(
                 intent.getStringExtra("empId").toString(),
                 intent.getStringExtra("empName").toString()
             )
         }
-    binding. btnDelete.setOnClickListener {
+        binding.btnDelete.setOnClickListener {
             deleteRecord(
                 intent.getStringExtra("empId").toString()
             )
@@ -44,13 +44,12 @@ class EmployeeDetailsActivity : AppCompatActivity() {
     }
 
 
-
     private fun deleteRecord(
         id: String
-    ){
-       viewModelDelet.delete(id)
-        viewModelDelet.deleted.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+    ) {
+        viewModelDelet.delete(id)
+        viewModelDelet.deleted.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -68,7 +67,7 @@ class EmployeeDetailsActivity : AppCompatActivity() {
         val etEmpAge = bindingUpdat.etEmpAge
         val etEmpSalary = bindingUpdat.etEmpSalary
 
-        val btnUpdateData =bindingUpdat.btnUpdateData
+        val btnUpdateData = bindingUpdat.btnUpdateData
 
         etEmpName.setText(intent.getStringExtra("empName").toString())
         etEmpAge.setText(intent.getStringExtra("empAge").toString())
@@ -88,11 +87,10 @@ class EmployeeDetailsActivity : AppCompatActivity() {
             )
 
 
-
             //we are setting updated data to our textviews
-           binding. tvEmpName.text = etEmpName.text.toString()
-           binding. tvEmpAge.text = etEmpAge.text.toString()
-           binding. tvEmpSalary.text = etEmpSalary.text.toString()
+            binding.tvEmpName.text = etEmpName.text.toString()
+            binding.tvEmpAge.text = etEmpAge.text.toString()
+            binding.tvEmpSalary.text = etEmpSalary.text.toString()
 
             alertDialog.dismiss()
         }
@@ -104,18 +102,18 @@ class EmployeeDetailsActivity : AppCompatActivity() {
         age: String,
         salary: String
     ) {
-       viewModelDelet.insertAction(EmployeeModel(id,name,age,salary))
-        viewModelDelet.action.observe(this){
+        viewModelDelet.insertAction(EmployeeModel(id, name, age, salary))
+        viewModelDelet.action.observe(this) {
             Toast.makeText(applicationContext, it, Toast.LENGTH_LONG).show()
         }
     }
 
 
     private fun setValuesToViews() {
-      binding.  tvEmpId.text = intent.getStringExtra("empId")
-        binding.  tvEmpName.text = intent.getStringExtra("empName")
-        binding.  tvEmpAge.text = intent.getStringExtra("empAge")
-        binding.  tvEmpSalary.text = intent.getStringExtra("empSalary")
+        binding.tvEmpId.text = intent.getStringExtra("empId")
+        binding.tvEmpName.text = intent.getStringExtra("empName")
+        binding.tvEmpAge.text = intent.getStringExtra("empAge")
+        binding.tvEmpSalary.text = intent.getStringExtra("empSalary")
 
     }
 }

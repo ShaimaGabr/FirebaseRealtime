@@ -20,6 +20,7 @@ object AppModule {
     fun provideFirebaseDatabaseInstance(): DatabaseReference {
         return Firebase.database.getReference("Employees")
     }
+
     @Provides
     @Singleton
     fun provideTaskRepository(

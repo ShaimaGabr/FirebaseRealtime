@@ -10,25 +10,24 @@ class RepositoryImp(
     var database: DatabaseReference
 
 
-) : TaskRepository
-{
-     val empList= arrayListOf<EmployeeModel>()
+) : TaskRepository {
+    val empList = arrayListOf<EmployeeModel>()
 
 
-        override suspend fun getTasks(liveData: MutableLiveData<List<EmployeeModel>>) {
+    override suspend fun getTasks(liveData: MutableLiveData<List<EmployeeModel>>) {
 
 
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 empList.clear()
-                if (snapshot.exists()){
-                    for (empSnap in snapshot.children){
+                if (snapshot.exists()) {
+                    for (empSnap in snapshot.children) {
                         val empData = empSnap.getValue(EmployeeModel::class.java)
                         empList.add(empData!!)
                         liveData.postValue(empList)
                         Log.d("testApp", empList.toString())
                     }
-  }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -38,30 +37,32 @@ class RepositoryImp(
         })
 
     }
-var IdUnite:String = ""
+
+    var IdUnite: String = ""
     override suspend fun insertTasks(data: EmployeeModel, action: MutableLiveData<String>) {
 
-if(data.empId==null){
-    IdUnite=database.push().key!!
-}else{
-    IdUnite= data.empId!!
-}
-        database.child(IdUnite).setValue(EmployeeModel(IdUnite,data.empName,data.empAge,data.empSalary))
+        if (data.empId == null) {
+            IdUnite = database.push().key!!
+        } else {
+            IdUnite = data.empId!!
+        }
+        database.child(IdUnite)
+            .setValue(EmployeeModel(IdUnite, data.empName, data.empAge, data.empSalary))
             .addOnCompleteListener {
-                  action.postValue("true")
-                }.addOnFailureListener { err ->
+                action.postValue("true")
+            }.addOnFailureListener { err ->
 
                 action.postValue("false")
             }
     }
 
     override suspend fun deletTask(id: String, action: MutableLiveData<String>) {
-       val remove= database.child(id).removeValue()
-           remove .addOnSuccessListener {
-          action.postValue("true")
+        val remove = database.child(id).removeValue()
+        remove.addOnSuccessListener {
+            action.postValue("true")
         }.addOnFailureListener {
-               action.postValue("false")
-           }
+            action.postValue("false")
+        }
     }
 
 

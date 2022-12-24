@@ -12,40 +12,39 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FetchingActivity : AppCompatActivity() {
-    lateinit var binding:ActivityFetchingBinding
+    lateinit var binding: ActivityFetchingBinding
     private lateinit var mAdapterAnother: AdapterAnother
-  private  val fetchingViewModel: ViewModelFetching by viewModels()
+    private val fetchingViewModel: ViewModelFetching by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       binding=ActivityFetchingBinding.inflate(layoutInflater)
+        binding = ActivityFetchingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mAdapterAnother = AdapterAnother()
 
-       mAdapterAnother= AdapterAnother()
-
-       fetchingViewModel.getTasks()
-   fetchingViewModel.tasks.observe(this){
-     mAdapterAnother.differ.submitList(it)
-       mAdapterAnother.notifyDataSetChanged()
-       binding.tvLoadingData.text=it.size.toString()
-       }
-       binding.rvEmp.apply {
-           adapter=mAdapterAnother
-       }
+        fetchingViewModel.getTasks()
+        fetchingViewModel.tasks.observe(this) {
+            mAdapterAnother.differ.submitList(it)
+            mAdapterAnother.notifyDataSetChanged()
+            binding.tvLoadingData.text = it.size.toString()
+        }
+        binding.rvEmp.apply {
+            adapter = mAdapterAnother
+        }
 
 
-       mAdapterAnother.onOverItemClick={data->
+        mAdapterAnother.onOverItemClick = { data ->
 
-           val intent = Intent(this@FetchingActivity, EmployeeDetailsActivity::class.java)
+            val intent = Intent(this@FetchingActivity, EmployeeDetailsActivity::class.java)
 
-                            //put extras
-                            intent.putExtra("empId", data.empId)
-                            intent.putExtra("empName", data.empName)
-                            intent.putExtra("empAge", data.empAge)
-                            intent.putExtra("empSalary", data.empSalary)
-                            startActivity(intent)
-       }
+            //put extras
+            intent.putExtra("empId", data.empId)
+            intent.putExtra("empName", data.empName)
+            intent.putExtra("empAge", data.empAge)
+            intent.putExtra("empSalary", data.empSalary)
+            startActivity(intent)
+        }
 
     }
 
