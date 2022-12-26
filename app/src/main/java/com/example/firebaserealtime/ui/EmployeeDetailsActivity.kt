@@ -59,7 +59,7 @@ class EmployeeDetailsActivity : AppCompatActivity() {
     ) {
         val mDialog = AlertDialog.Builder(this)
         val bindingUpdat = UpdateDialogBinding.inflate(layoutInflater)
-        //val mDialogView = inflater.inflate(R.layout.update_dialog, null)
+
 
         mDialog.setView(bindingUpdat.root)
 
